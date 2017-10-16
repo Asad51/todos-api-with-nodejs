@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 
 var port = normalizePort(process.env.PORT || '3000');
-var index = require('./routes/index')
+var index = require('./routes/index');
+var todos = require('./routes/todos');
 
 var app = express();
 var upload = multer();
@@ -94,6 +95,8 @@ function onListening () {
 // handling requests
 
 app.use('/', index);
+app.get('/todos', todos);
+app.post('/todos', todos);
 
 
 
