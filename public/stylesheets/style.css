@@ -1,0 +1,22 @@
+
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+    display: inline-block;
+}
+
+#todo_table, #todo_table th, #todo_table tr, #todo_table td {
+    width: 40%;
+    border: solid 1px;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+#todo_table th{
+    color: green;
+}

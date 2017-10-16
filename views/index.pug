@@ -2,4 +2,15 @@ extends layout
 
 block content
     h1= name
-    p :)
+    table(id='todo_table')
+        tr
+            th ID
+            th Name
+            th Completed
+            th Updated
+        each row in rows
+            tr
+                td=row.id
+                td=row.name
+                td=row.completed
+                td=row.updated_at
