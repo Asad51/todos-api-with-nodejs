@@ -85,33 +85,73 @@ router.post('/todos', function(req, res, next) {
 	}
 });
 
-router.put('/todos/:id', function (req, res, next) {
-    mongoose.connect('mongodb://localhost/mydb', function(err) {
-        if (err) {
-            console.log('can not connect database');
-            throw err;
-        }
-        console.log('database connected');
-    });
+router.get('/todos/:id', function(req, res, next) {
+	mongoose.connect('mongodb://localhost/mydb', function(err) {
+		if (err) {
+			console.log('can not connect database');
+			throw err;
+		}
+		console.log('database connected');
+	});
 
-    todo.findById(req.params.id, function (err, todo) {
-        if (err){
-            res.send('No data found');
-        } else {
-            if (!req.body.name || !req.body.completed || !req.body.updated_at) {
-                res.send('Sorry, fill in the form correctly.');
-                //res.redirect('/todos');
-            } else {
-                todo.update({"id": req.params.id}, {"name": req.body.name, "completed": req.body.completed, "updated_at": req.body.updated_at}, function(err, result) {
-                    if (err) {
-                        res.send('database error');
-                    } else {
-                        res.send('Updated ' + result);
-                    }
-                });
-            }
-        }
-    });
+	todo.find({
+		id: req.params.id
+	}, function(err, rows) {
+		if (err) {
+			res.send('No data found');
+		} else {
+			res.render('get_todos', {
+				title: 'Todos Api',
+				name: 'All todos data',
+				rows: rows
+			});
+		}
+	});
+	mongoose.disconnect(function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Connection Closed');
+		}
+	});
+});
+
+router.put('/todos/:id', function(req, res, next) {
+	mongoose.connect('mongodb://localhost/mydb', function(err) {
+		if (err) {
+			console.log('can not connect database');
+			throw err;
+		}
+		console.log('database connected');
+	});
+
+	todo.find({
+		id: req.params.id
+	}, function(err) {
+		if (err) {
+			res.send('No data found');
+		} else {
+			if (!req.body.name) {
+				res.send('Sorry, fill in the form correctly.');
+				//res.redirect('/todos');
+			} else {
+				todo.update({
+					id: req.params.id
+				}, {
+					name: req.body.name,
+					completed: req.body.completed,
+					updated_at: req.body.updated_at
+				}, function(err, result) {
+					if (err) {
+						res.send('database error');
+					} else {
+						res.send('Updated ' + result);
+						console.log('Updated ' + result);
+					}
+				});
+			}
+		}
+	});
 });
 
 module.exports = router;
