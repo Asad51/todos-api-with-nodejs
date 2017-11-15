@@ -22,9 +22,9 @@ router.get('/todos', function(req, res, next) {
 	// finding all todo information and send to webpage
 	todo.find(function(err, rows) {
 		if (err) {
-			res.send('database error', {
-				title: 'error'
-			});
+			res.send('database error');
+		} else if(rows.length<=0){
+			res.send('No data found');
 		} else {
 			res.render('get_todos', {
 				title: 'Todos Api',
@@ -99,6 +99,8 @@ router.get('/todos/:id', function(req, res, next) {
 	}, function(err, rows) {
 		if (err) {
 			res.send('No data found');
+		} else if(rows.length<=0){
+			res.send('No data found');
 		} else {
 			res.render('get_todos', {
 				title: 'Todos Api',
@@ -141,15 +143,44 @@ router.put('/todos/:id', function(req, res, next) {
 					name: req.body.name,
 					completed: req.body.completed,
 					updated_at: req.body.updated_at
-				}, function(err, result) {
+				},
+				{
+					new: true
+				},
+				function(err, result) {
 					if (err) {
 						res.send('database error');
 					} else {
-						res.send('Updated ' + result);
-						console.log('Updated ' + result);
+						res.send('Updated ' + result.toString());
+						console.log('Updated ' + result.toString());
 					}
 				});
 			}
+		}
+	});
+});
+
+router.delete('/todos/:id', function(req, res, next) {
+	mongoose.connect('mongodb://localhost/mydb', function(err) {
+		if (err) {
+			console.log('can not connect database');
+			throw err;
+		}
+		console.log('database connected');
+	});
+	todo.find({
+		id: req.params.id
+	}, function(err) {
+		if (err) {
+			res.send('No data found');
+		} else {
+			todo.remove({id: req.params.id}, function(err, data){
+				if(err){
+					rse.send('database error');
+				} else{
+					res.send('deleted' + data.toString());
+				}
+			});
 		}
 	});
 });

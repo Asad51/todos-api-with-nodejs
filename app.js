@@ -99,6 +99,7 @@ app.get('/todos', todos);
 app.post('/todos', todos);
 app.get('/todos/:id',todos);
 app.put('/todos/:id',todos);
+app.delete('/todos/:id',todos);
 
 
 
