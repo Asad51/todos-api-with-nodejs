@@ -23,14 +23,8 @@ router.get('/todos', function(req, res, next) {
 	todo.find(function(err, rows) {
 		if (err) {
 			res.send('database error');
-		} else if(rows.length<=0){
-			res.send('No data found');
 		} else {
-			res.render('get_todos', {
-				title: 'Todos Api',
-				name: 'All todos data',
-				rows: rows
-			});
+			res.json(rows);
 		}
 	});
 
@@ -72,7 +66,7 @@ router.post('/todos', function(req, res, next) {
 			if (err) {
 				res.send('database error');
 			} else {
-				res.send('Inserted ' + result);
+				res.json(result);
 			}
 		});
 		mongoose.disconnect(function(err) {
@@ -98,15 +92,9 @@ router.get('/todos/:id', function(req, res, next) {
 		id: req.params.id
 	}, function(err, rows) {
 		if (err) {
-			res.send('No data found');
-		} else if(rows.length<=0){
-			res.send('No data found');
+			throw err;
 		} else {
-			res.render('get_todos', {
-				title: 'Todos Api',
-				name: 'All todos data',
-				rows: rows
-			});
+			res.json(rows);
 		}
 	});
 	mongoose.disconnect(function(err) {
@@ -151,11 +139,19 @@ router.put('/todos/:id', function(req, res, next) {
 					if (err) {
 						res.send('database error');
 					} else {
-						res.send('Updated ' + result.toString());
+						res.json(result);
 						console.log('Updated ' + result.toString());
 					}
 				});
 			}
+		}
+	});
+
+	mongoose.disconnect(function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Connection Closed');
 		}
 	});
 });
@@ -178,9 +174,16 @@ router.delete('/todos/:id', function(req, res, next) {
 				if(err){
 					rse.send('database error');
 				} else{
-					res.send('deleted' + data.toString());
+					res.json(data);
 				}
 			});
+		}
+	});
+	mongoose.disconnect(function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Connection Closed');
 		}
 	});
 });

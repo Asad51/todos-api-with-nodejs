@@ -1,0 +1,6 @@
+
+BSSID, First time seen, Last time seen, channel, Speed, Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key
+34:CE:00:13:04:73, 2017-11-21 00:21:01, 2017-11-21 00:21:51,  1,  54, WPA2, CCMP TKIP,PSK, -78,      480,        8,   0.  0.  0.  0,  10, Niloy_plus, 
+
+Station MAC, First time seen, Last time seen, Power, # packets, BSSID, Probed ESSIDs
+
